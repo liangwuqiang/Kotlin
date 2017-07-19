@@ -1,3 +1,4 @@
+//要点：Hello程序
 /**
  * We declare a package-level function main which returns Unit
  * 我们声明一个返回Unit的包级别的main函数，
@@ -9,8 +10,6 @@
 
 fun main(args: Array<String>) {
     println("Hello, world!")
-    println("嗨，你好！")
 }
 
 //Hello, world!
-//嗨，你好！
