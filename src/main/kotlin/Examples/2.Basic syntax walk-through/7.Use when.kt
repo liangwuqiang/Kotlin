@@ -1,3 +1,4 @@
+//要点：when语句
 /**
  * See http://kotlinlang.org/docs/reference/control-flow.html#when-expression
  */
@@ -10,7 +11,7 @@ fun main(args: Array<String>) {
     cases("hello")
 }
 
-fun cases(obj: Any) {
+fun cases(obj: Any) {  //传入参数为Any
     when (obj) {
         1 -> println("One")
         "Hello" -> println("Greeting")
@@ -22,3 +23,9 @@ fun cases(obj: Any) {
 
 class MyClass() {
 }
+
+//Greeting
+//One
+//Long
+//Not a string
+//Unknown
