@@ -20,6 +20,7 @@ class User {
     var name: String by Delegates.observable("no name") {
         d, old, new ->
         println("$old - $new")  //将变量传入到一个函数中去，lambda表达式
+//        println(d)
     }
 }
 
@@ -29,3 +30,4 @@ fun main(args: Array<String>) {
 }
 
 //no name - Carl
+//property name (Kotlin reflection is not available)
