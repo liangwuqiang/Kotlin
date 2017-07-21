@@ -4,6 +4,7 @@
  *  other goodies common for data: toString(), equals(), hashCode() and copy().
  *  See http://kotlinlang.org/docs/reference/data-classes.html#data-classes
  */
+package dataClasses  //额外添加，避免类名冲突
 
 data class User(val name: String, val id: Int)
 
