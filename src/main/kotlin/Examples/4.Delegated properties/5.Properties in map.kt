@@ -36,11 +36,13 @@ fun main(args: Array<String>) {
 
 //-----------------------------以下是额外的内容
 fun foo() {
+    val list = listOf(1, 2, 3)
     val array = arrayListOf<String>()  //:ArrayList<T>
     array.add("aaa")
     array.add("bbb")
     val array2 = arrayOf("aaa", "bbb")  //:Array<T>
     val map = mapOf("name" to "John Doe", "age" to 25)
+    println(list)
     println(array)   //[aaa, bbb]
     println(array2)   //[Ljava.lang.String;@214c265e
     println(map)  //{name=John Doe, age=25}
