@@ -35,7 +35,8 @@ package bottles
 
 fun main(args: Array<String>) {
     if (args.isEmpty) {   //检查参数是否为空，无参数时设置默认参数99
-        printBottles(99)
+//        printBottles(99)
+        printBottles(3)
     } else {
         try {
             printBottles(args[0].toInt())  //命令行参数转成整数，有可能不是数字，这里进行异常测试
@@ -54,31 +55,57 @@ fun printBottles(bottleCount: Int) {
         return
     }
 
-    println("The \"${bottlesOfBeer(bottleCount)}\" song\n")
+//    println("The \"${bottlesOfBeer(bottleCount)}\" song\n")
+    println("\"${bottlesOfBeer(bottleCount)}\" 歌\n")
 
-    var bottles = bottleCount
+    var bottles = bottleCount  //初始化循环次数
     while (bottles > 0) {
-        val bottlesOfBeer = bottlesOfBeer(bottles)
-        print("$bottlesOfBeer on the wall, $bottlesOfBeer.\nTake one down, pass it around, ")
+        val bottlesOfBeer = bottlesOfBeer(bottles)  //取得需要显示的啤酒瓶数
+//        print("$bottlesOfBeer on the wall, $bottlesOfBeer.\nTake one down, pass it around, ")
+        print("$bottlesOfBeer 在墙上， $bottlesOfBeer.\n拿下来，传递一圈， ")
         bottles--
-        println("${bottlesOfBeer(bottles)} on the wall.\n")
+//        println("${bottlesOfBeer(bottles)} on the wall.\n")
+        println("${bottlesOfBeer(bottles)} 在墙上。\n")
     }
-    println("No more bottles of beer on the wall, no more bottles of beer.\n" +
-            "Go to the store and buy some more, ${bottlesOfBeer(bottleCount)} on the wall.")
+//    println("No more bottles of beer on the wall, no more bottles of beer.\n" +
+//            "Go to the store and buy some more, ${bottlesOfBeer(bottleCount)} on the wall.")
+    println("墙上没有啤酒瓶了，没有啤酒瓶。去商店里买些，${bottlesOfBeer(bottleCount)}在墙上。")
 }
 
 fun bottlesOfBeer(count: Int): String =
         when (count) {
-            0 -> "no more bottles"
-            1 -> "1 bottle"
-            else -> "$count bottles"
-        } + " of beer"
+//            0 -> "no more bottles"
+            0 -> "没有"
+//            1 -> "1 bottle"
+            1 -> "1 个"
+//            else -> "$count bottles"
+            else -> "$count 个"
+//        } + " of beer"
+        } + " 啤酒瓶"
 
 /*
  * An excerpt from the Standard Library
+ * 来自标准库的一个引用
  */
 
 
-// This is an extension property, i.e. a property that is defined for the
-// type Array<T>, but does not sit inside the class Array
-val <T> Array<T>.isEmpty: Boolean get() = size == 0
+// This is an extension property, i.e. a property that is defined for the type Array<T>,
+// 这是个扩展属性，例如，一个属性被定义为 Array<T> 类型，
+// but does not sit inside the class Array
+// 但是它不在 Array 类的内部
+val <T> Array<T>.isEmpty: Boolean get() = size == 0  //根据数组是否有元素，返回布尔值
+//val <T> Array<T>.isEmpty: Boolean get() = (size == 0)
+
+
+//"3 个 啤酒瓶" 歌
+//
+//3 个 啤酒瓶 在墙上， 3 个 啤酒瓶.
+//拿下来，传递一圈， 2 个 啤酒瓶 在墙上。
+//
+//2 个 啤酒瓶 在墙上， 2 个 啤酒瓶.
+//拿下来，传递一圈， 1 个 啤酒瓶 在墙上。
+//
+//1 个 啤酒瓶 在墙上， 1 个 啤酒瓶.
+//拿下来，传递一圈， 没有 啤酒瓶 在墙上。
+//
+//墙上没有啤酒瓶了，没有啤酒瓶。去商店里买些，3 个 啤酒瓶在墙上。
