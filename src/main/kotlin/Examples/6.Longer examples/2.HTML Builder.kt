@@ -1,10 +1,12 @@
 /**
  * This is an example of a Type-Safe Groovy-style Builder
- *
+ * 这是个 类型安全 Groovy风格 建造器 的例子
  * Builders are good for declaratively describing data in your code.
+ * 建造器有利于在你的代码中声明描述数据。
  * In this example we show how to describe an HTML page in Kotlin.
- *
+ * 在这个例子中， 我们演示了 怎样在Kotlin中描述 HTML页面。
  * See this page for details:
+ * 详见以下网页：
  * http://kotlinlang.org/docs/reference/type-safe-builders.html
  */
 package html
@@ -13,28 +15,39 @@ fun main(args: Array<String>) {
     val result =
             html {
                 head {
-                    title { +"XML encoding with Kotlin" }
+//                    title { +"XML encoding with Kotlin" }
+                    title { +"使用Kotlin进行XML编码" }
                 }
                 body {
-                    h1 { +"XML encoding with Kotlin" }
-                    p { +"this format can be used as an alternative markup to XML" }
+//                    h1 { +"XML encoding with Kotlin" }
+                    h1 { +"使用Kotlin进行XML编码" }
+                    p { +"这个格式化可以用作 可替换的XML标识" }
 
                     // an element with attributes and text content
+                    // 一个具有属性和文本内容的 元素
                     a(href = "http://jetbrains.com/kotlin") { +"Kotlin" }
 
                     // mixed content
+                    // 固定的内容
                     p {
-                        +"This is some"
-                        b { +"mixed" }
-                        +"text. For more see the"
+//                        +"This is some"
+                        +"这是一些"
+//                        b { +"mixed" }
+                        b { +"固定的" }
+//                        +"text. For more see the"
+                        +"文本。详见"
                         a(href = "http://jetbrains.com/kotlin") { +"Kotlin" }
-                        +"project"
+//                        +"project"
+                        +"工程"
                     }
-                    p { +"some text" }
+//                    p { +"some text" }
+                    p { +"其它一些文本" }
 
                     // content generated from command-line arguments
+                    // 从命令行参数中 产生的内容
                     p {
                         +"Command line arguments were:"
+                        +"命令行参数是："
                         ul {
                             for (arg in args)
                                 li { +arg }
@@ -46,18 +59,18 @@ fun main(args: Array<String>) {
 }
 
 interface Element {
-    fun render(builder: StringBuilder, indent: String)
+    fun render(builder: StringBuilder, indent: String)  //着色，建造器，意图
 }
 
 class TextElement(val text: String) : Element {
-    override fun render(builder: StringBuilder, indent: String) {
-        builder.append("$indent$text\n")
+    override fun render(builder: StringBuilder, indent: String) {  //复写父接口函数
+        builder.append("$indent$text\n")  //附加上 意图和传入的文本
     }
 }
 
-abstract class Tag(val name: String) : Element {
-    val children = arrayListOf<Element>()
-    val attributes = hashMapOf<String, String>()
+abstract class Tag(val name: String) : Element {  //抽象类 标签
+    val children = arrayListOf<Element>()  //子类 元素数组
+    val attributes = hashMapOf<String, String>()  //属性 Map
 
     protected fun <T : Element> initTag(tag: T, init: T.() -> Unit): T {
         tag.init()
@@ -65,7 +78,7 @@ abstract class Tag(val name: String) : Element {
         return tag
     }
 
-    override fun render(builder: StringBuilder, indent: String) {
+    override fun render(builder: StringBuilder, indent: String) {  //复写render()方法
         builder.append("$indent<$name${renderAttributes()}>\n")
         for (c in children) {
             c.render(builder, indent + "  ")
@@ -82,7 +95,7 @@ abstract class Tag(val name: String) : Element {
     }
 
 
-    override fun toString(): String {
+    override fun toString(): String {  //复写toString()方法
         val builder = StringBuilder()
         render(builder, "")
         return builder.toString()

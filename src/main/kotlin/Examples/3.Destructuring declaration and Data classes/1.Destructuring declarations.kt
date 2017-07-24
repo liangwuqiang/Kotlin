@@ -19,9 +19,9 @@ fun main(args: Array<String>) {
     println("num = $num, name = $name")
 }
 
-class Pair<K, V>(val first: K, val second: V) { //类使用了两种泛型
-    operator fun component1(): K {
-        return first
+class Pair <K, V> (val first: K, val second: V) { //类使用了两种泛型
+    operator fun component1(): String {
+        return first.toString()
     }
 
     operator fun component2(): V {
