@@ -30,31 +30,42 @@ fun openFile(fullFilename: String): ArrayList<Word> {
 
 fun dealWord(word: String): String {
     val path = "/home/lwq/Desktop/Kotlin/src/test/kotlin/"
-    var filename = "Collins5.dict"
-        val collins5 = openFile(path +filename)
-    filename = "Collins4.dict"
-        val collins4 = openFile(path +filename)
-    filename = "Collins3.dict"
-        val collins3 = openFile(path +filename)
+    val array = arrayOf("MyVocabulary.dict", "NewWord.dict",
+            "Collins5.dict", "Collins4.dict", "Collins3.dict")
+    for (i in array.indices) {
+        val dict = openFile(path + array[i])
+//        println(dict)
+        for (item in dict) {
+            if (item.name == word) {
+                return "${item.comment}"
+            }
+        }
+    }
+//    var filename = "Collins5.dict"
+//        val collins5 = openFile(path +filename)
+//    filename = "Collins4.dict"
+//        val collins4 = openFile(path +filename)
+//    filename = "Collins3.dict"
+//        val collins3 = openFile(path +filename)
 
-    for (item in collins5) {
-        if (item.name == word) {
-            return "${item.comment}"
-        }
-    }
-    for (item in collins4) {
-        if (item.name == word) {
-            return "${item.comment}"
-        }
-    }
-    for (item in collins3) {
-        if (item.name == word) {
-            return "${item.comment}"
-        }
-    }
+//    for (item in collins5) {
+//        if (item.name == word) {
+//            return "${item.comment}"
+//        }
+//    }
+//    for (item in collins4) {
+//        if (item.name == word) {
+//            return "${item.comment}"
+//        }
+//    }
+//    for (item in collins3) {
+//        if (item.name == word) {
+//            return "${item.comment}"
+//        }
+//    }
     return ""
 }
 
 fun main(args: Array<String>) {
-    dealWord("unique")
+    println(dealWord("unique"))
 }
