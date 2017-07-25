@@ -7,11 +7,11 @@ enum class Color(val red: Int, val green: Int, val blue: Int) {
     BLACK(0, 0, 0),  //黑色  用于自己的词库，正常色
     GREEN(0, 139, 0),  //green4 绿色  柯林斯5星
     BLUE(0, 0, 205),  //blue3 蓝色  柯林斯4星
+    RED(205, 0 , 0),  //Red3 红色  柯林斯3星
+    GREY(105, 105, 105),  //灰色  超出范围的词
     VIOLET(238, 130, 238),  //violet 紫色  备用
     ORANGE(238, 154, 0),  //Orange2 橙色  备用
-    RED(205, 0 , 0),  //Red3 红色  柯林斯3星
     CYAN(0, 205, 205);  //Cyan3 青色  备用
-    //灰色  超出范围的词
 
 }
 
