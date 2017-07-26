@@ -25,80 +25,99 @@ fun openDictFile(fullFilename: String): ArrayList<Word> {
     val lines = file.readLines()
     val arrayOfWord = arrayListOf<Word>()
     for (line in lines) {
-        val word = line.split("[", "]")
-        arrayOfWord.add(Word(word[0], word[1], word[2]))
+        if ("[" in line && "]" in line) {
+            val word = line.split("[", "]")
+            arrayOfWord.add(Word(word[0], word[1], word[2]))
+        } else {
+//            println(line)
+            arrayOfWord.add(Word(line, "", ""))
+        }
+//        val word = line.split("[", "]")
     }
     return arrayOfWord
 }
 
 fun dealWord(word: String): String {  //只处理一个单词
     val path = "/home/lwq/Desktop/Kotlin/src/test/kotlin/"
-    val array = arrayOf("MyWord.dict", "NewWord.dict",
-            "Collins5.dict", "Collins4.dict", "Collins3.dict")
-    val flag = arrayOf(0)
+    val array = arrayOf("MyWord.dict", "NewWord.dict"
+            ,"Collins5.dict", "Collins4.dict", "Collins3.dict"
+    //        ,"Collins2.dict", "Collins1.dict", "Collins0.dict"
+    )
+
     for (i in array.indices) {
         val dict = openDictFile(path + array[i])
         for (item in dict) {
-            if (item.name.toLowerCase() == word.toLowerCase()) {
-                flag[0] = 1
+            if (word.toLowerCase() == item.name.toLowerCase()
+                || word.toLowerCase() == item.name.toLowerCase()+"s"
+                || word.toLowerCase() == item.name.toLowerCase()+"d"
+                || word.toLowerCase() == item.name.toLowerCase()+"ed"
+                || word.toLowerCase() == item.name.toLowerCase()+"ing"
+                || word.toLowerCase() == item.name.toLowerCase()+"er"
+                || word.toLowerCase() == item.name.toLowerCase()+"\'s"
+                || word.toLowerCase() == item.name.toLowerCase()+"\'d"
+                || word.toLowerCase() == item.name.toLowerCase()+"\'ve"  //I 've never seen a cat
+                ) {
                 return when(i) {
-                    0 -> "<font color='black'>$word</font>"
-                    1 -> "<font color='grey'>$word</font>"
-                    2 -> "<font color='green'>$word</font>"
-                    3 -> "<font color='blue'>$word</font>"
-                    4 -> "<font color='red'>$word</font>"
-                    else -> "<font color='orange'>$word</font>"
+                    0 -> "<font color='green'>$word</font>"  //熟词
+                    1 -> "<font color='orange'>$word</font>"  //生词
+                    2 -> "<font color='green'>$word</font>"  //5星
+                    3 -> "<font color='blue'>$word</font>"  //4星
+                    4 -> "<font color='red'>$word</font>"  //3星
+                    5 -> "<font color='violet'>$word</font>"  //2星
+                    6 -> "<font color='violet'>$word</font>"  //1星
+                    7 -> "<font color='violet'>$word</font>"  //0星
+                    else -> "<font color='grey'>$word</font>"
                 }
             }
         }
     }
-    if (flag[0] == 0) {
-        return "<font color='orange'>$word</font>"
-    }
-    return ""
+
+    val unknownFile = File(path + "Unknown.dict")
+    unknownFile.appendText("$word \n")
+    return "<font color='grey'>$word</font>"
 }
 
 fun html() {
-    val string1 = """
-<!DOCTYPE html>
-<html5>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>
-       用于测试单词的颜色显示
-    </title>
-</head>
-<body>
-<p>
-    <font color="BLUE">这是一段示例用的代码</font>
-"""
-    val string2 = """
-</p>
-</body>
-</html5>
-"""
     val path = "/home/lwq/Desktop/Kotlin/src/test/kotlin/"
-    var filename = "test.txt"
-    val test = File(path + filename)
-    var str = ""
-    val array = arrayListOf<String>()
-    array.add(string1)
-    for (char in test.readText()) {
-        if (char in 'A'..'z') {
-            str += char.toString()
-            continue
+    val inputfile = File(path + "test.txt")
+    val word = StringBuilder()
+    val text = StringBuilder()
+    //文档开头部分
+    text.append("""
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                <title>单词分级颜色显示</title>
+            </head>
+            <body>
+                <p> <font color="BLUE">这是一段示例用的代码</font> </p>
+                <p>
+    """)
+    for (line in inputfile.readLines()) {
+        for (char in line) {
+            if (char in 'A'..'Z' ||char in 'a'..'z' ||char == '\'') {
+                word.append(char.toString())
+                continue
+            }
+            if (word.toString() != "") {
+    //            println(dealWord(word.toString()))
+                text.append(dealWord(word.toString()))
+                word.delete(0, word.length)
+            }
+            text.append(char.toString())
         }
-        if (str != "") {
-            array.add(dealWord(str))
-            str = ""
-        }
-        array.add(char.toString())
+        text.append("</p> <P>")
     }
-    array.add(string2)
-    for (item in array) str += item
-    println(str)
-    filename = "test.html"
-
+    //文档结尾部分
+    text.append("""
+                </p>
+            </body>
+        </html>
+    """)
+//    println(text)
+    val outputfile = File(path + "test.html")
+    outputfile.writeText(text.toString())
 }
 fun main(args: Array<String>) {
     html()
