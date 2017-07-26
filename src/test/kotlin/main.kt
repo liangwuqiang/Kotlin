@@ -23,4 +23,16 @@ fun readFile() {
 
 fun main(args: Array<String>) {
     readFile()
+    val array=arrayListOf<String>()
+    array.add("dsfsdf")
+    array.add("dfsdfsdetwet34")
+    array.add("fgdsuykjklf")
+    println(array)
+    var str1 = ""
+    for (item in array) str1 += item
+    println(str1)
+    var flag =0
+    for (item in array) {
+        flag =1
+    }
 }

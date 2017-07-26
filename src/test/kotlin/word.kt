@@ -1,6 +1,7 @@
 package word
 
 import java.io.File
+
 enum class Color(val red: Int, val green: Int, val blue: Int) {
     //颜色对照表 http://www.917118.com/tool/color_3.html
     WHITE(255, 255, 255),  //白色  背景色
@@ -13,59 +14,92 @@ enum class Color(val red: Int, val green: Int, val blue: Int) {
     ORANGE(238, 154, 0),  //Orange2 橙色  备用
     CYAN(0, 205, 205);  //Cyan3 青色  备用
 
+    fun getColor() = (red * 255 + green) *255 + blue
+
 }
 
 data class Word(val name: String, val pronunciation: String, val comment: String)
 
-fun openFile(fullFilename: String): ArrayList<Word> {
+fun openDictFile(fullFilename: String): ArrayList<Word> {
     val file = File(fullFilename)
     val lines = file.readLines()
     val arrayOfWord = arrayListOf<Word>()
     for (line in lines) {
-        var word = line.split("[", "]")
+        val word = line.split("[", "]")
         arrayOfWord.add(Word(word[0], word[1], word[2]))
     }
     return arrayOfWord
 }
 
-fun dealWord(word: String): String {
+fun dealWord(word: String): String {  //只处理一个单词
     val path = "/home/lwq/Desktop/Kotlin/src/test/kotlin/"
-    val array = arrayOf("MyVocabulary.dict", "NewWord.dict",
+    val array = arrayOf("MyWord.dict", "NewWord.dict",
             "Collins5.dict", "Collins4.dict", "Collins3.dict")
+    val flag = arrayOf(0)
     for (i in array.indices) {
-        val dict = openFile(path + array[i])
-//        println(dict)
+        val dict = openDictFile(path + array[i])
         for (item in dict) {
-            if (item.name == word) {
-                return "${item.comment}"
+            if (item.name.toLowerCase() == word.toLowerCase()) {
+                flag[0] = 1
+                return when(i) {
+                    0 -> "<font color='black'>$word</font>"
+                    1 -> "<font color='grey'>$word</font>"
+                    2 -> "<font color='green'>$word</font>"
+                    3 -> "<font color='blue'>$word</font>"
+                    4 -> "<font color='red'>$word</font>"
+                    else -> "<font color='orange'>$word</font>"
+                }
             }
         }
     }
-//    var filename = "Collins5.dict"
-//        val collins5 = openFile(path +filename)
-//    filename = "Collins4.dict"
-//        val collins4 = openFile(path +filename)
-//    filename = "Collins3.dict"
-//        val collins3 = openFile(path +filename)
-
-//    for (item in collins5) {
-//        if (item.name == word) {
-//            return "${item.comment}"
-//        }
-//    }
-//    for (item in collins4) {
-//        if (item.name == word) {
-//            return "${item.comment}"
-//        }
-//    }
-//    for (item in collins3) {
-//        if (item.name == word) {
-//            return "${item.comment}"
-//        }
-//    }
+    if (flag[0] == 0) {
+        return "<font color='orange'>$word</font>"
+    }
     return ""
 }
 
+fun html() {
+    val string1 = """
+<!DOCTYPE html>
+<html5>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+       用于测试单词的颜色显示
+    </title>
+</head>
+<body>
+<p>
+    <font color="BLUE">这是一段示例用的代码</font>
+"""
+    val string2 = """
+</p>
+</body>
+</html5>
+"""
+    val path = "/home/lwq/Desktop/Kotlin/src/test/kotlin/"
+    var filename = "test.txt"
+    val test = File(path + filename)
+    var str = ""
+    val array = arrayListOf<String>()
+    array.add(string1)
+    for (char in test.readText()) {
+        if (char in 'A'..'z') {
+            str += char.toString()
+            continue
+        }
+        if (str != "") {
+            array.add(dealWord(str))
+            str = ""
+        }
+        array.add(char.toString())
+    }
+    array.add(string2)
+    for (item in array) str += item
+    println(str)
+    filename = "test.html"
+
+}
 fun main(args: Array<String>) {
-    println(dealWord("unique"))
+    html()
 }

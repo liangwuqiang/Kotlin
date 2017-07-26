@@ -46,7 +46,7 @@ fun main(args: Array<String>) {
                     // content generated from command-line arguments
                     // 从命令行参数中 产生的内容
                     p {
-                        +"Command line arguments were:"
+//                        +"Command line arguments were:"
                         +"命令行参数是："
                         ul {
                             for (arg in args)
