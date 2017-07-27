@@ -28,9 +28,9 @@ fun openDictFile(fullFilename: String): ArrayList<Word> {
         if ("[" in line && "]" in line) {
             val word = line.split("[", "]")
             arrayOfWord.add(Word(word[0], word[1], word[2]))
-        } else {
+//        } else {
 //            println(line)
-            arrayOfWord.add(Word(line, "", ""))
+//            arrayOfWord.add(Word(line, "", ""))
         }
 //        val word = line.split("[", "]")
     }
@@ -38,48 +38,52 @@ fun openDictFile(fullFilename: String): ArrayList<Word> {
 }
 
 fun dealWord(word: String): String {  //只处理一个单词
-    val path = "/home/lwq/Desktop/Kotlin/src/test/kotlin/"
-    val array = arrayOf("MyWord.dict", "NewWord.dict"
-            ,"Collins5.dict", "Collins4.dict", "Collins3.dict"
-    //        ,"Collins2.dict", "Collins1.dict", "Collins0.dict"
+    val homePath = "/home/lwq/Desktop/Kotlin/src/test/kotlin/"
+    val dictPath = homePath + "dict/"
+    val array = arrayOf("MyWords", "NewWords"  //我的词库，生词表
+        , "A-Z", "irregular"                 //字母表，不规则动词
+        ,"Collins5", "Collins4", "Collins3"  //柯林斯分频词库
+    //  ,"Collins2", "Collins1.dict", "Collins0"
     )
 
     for (i in array.indices) {
-        val dict = openDictFile(path + array[i])
+        val dict = openDictFile(dictPath + array[i] +".dict")
         for (item in dict) {
             if (word.toLowerCase() == item.name.toLowerCase()
-                || word.toLowerCase() == item.name.toLowerCase()+"s"
-                || word.toLowerCase() == item.name.toLowerCase()+"d"
-                || word.toLowerCase() == item.name.toLowerCase()+"ed"
-                || word.toLowerCase() == item.name.toLowerCase()+"ing"
-                || word.toLowerCase() == item.name.toLowerCase()+"er"
+                || word.toLowerCase() == item.name.toLowerCase()+"s"  //复数
+                || word.toLowerCase() == item.name.toLowerCase()+"d"  //过去式
+                || word.toLowerCase() == item.name.toLowerCase()+"ed"  //过去式
+                || word.toLowerCase() == item.name.toLowerCase()+"ing"  //进行时
+//                || word.toLowerCase() == item.name.toLowerCase()+"er"
                 || word.toLowerCase() == item.name.toLowerCase()+"\'s"
                 || word.toLowerCase() == item.name.toLowerCase()+"\'d"
                 || word.toLowerCase() == item.name.toLowerCase()+"\'ve"  //I 've never seen a cat
                 ) {
-                return when(i) {
-                    0 -> "<font color='green'>$word</font>"  //熟词
-                    1 -> "<font color='orange'>$word</font>"  //生词
-                    2 -> "<font color='green'>$word</font>"  //5星
-                    3 -> "<font color='blue'>$word</font>"  //4星
-                    4 -> "<font color='red'>$word</font>"  //3星
-                    5 -> "<font color='violet'>$word</font>"  //2星
-                    6 -> "<font color='violet'>$word</font>"  //1星
-                    7 -> "<font color='violet'>$word</font>"  //0星
+                return when(array[i]) {
+                    "MyWords" -> "<font color='green'>$word</font>"  //我的词库，已掌握
+                    "NewWords" -> "<font color='orange'>$word</font>"  //生词表，未掌握
+                    "A-Z" -> "<font color='orange'>$word</font>"  //字母表
+                    "irregular" -> "<font color='orange'>$word</font>"  //不规则动词
+                    "Collins5" -> "<font color='green'>$word</font>"  //5星
+                    "Collins4" -> "<font color='blue'>$word</font>"  //4星
+                    "Collins3" -> "<font color='red'>$word</font>"  //3星
+//                    "Collins2" -> "<font color='violet'>$word</font>"  //2星
+//                    "Collins1" -> "<font color='violet'>$word</font>"  //1星
+//                    "Collins0" -> "<font color='violet'>$word</font>"  //0星
                     else -> "<font color='grey'>$word</font>"
                 }
             }
         }
     }
 
-    val unknownFile = File(path + "Unknown.dict")
+    val unknownFile = File(homePath + "output/Unknown.dict")
     unknownFile.appendText("$word \n")
     return "<font color='grey'>$word</font>"
 }
 
 fun html() {
     val path = "/home/lwq/Desktop/Kotlin/src/test/kotlin/"
-    val inputfile = File(path + "test.txt")
+    val inputfile = File(path + "text/test.txt")
     val word = StringBuilder()
     val text = StringBuilder()
     //文档开头部分
@@ -91,7 +95,13 @@ fun html() {
                 <title>单词分级颜色显示</title>
             </head>
             <body>
-                <p> <font color="BLUE">这是一段示例用的代码</font> </p>
+                <h1>说明：</h1>
+                    <p><font color="GREEN">[绿色]常用</font></p>
+                    <p><font color="BLUE">[蓝色]普通</font></p>
+                    <p><font color="RED">[红色]不常用</font></p>
+                    <p><font color="ORANGE">[橙色]不规则变化</font></p>
+                    <p><font color="GREY">[灰色]没能识别</font></p>
+
                 <p>
     """)
     for (line in inputfile.readLines()) {
@@ -116,7 +126,7 @@ fun html() {
         </html>
     """)
 //    println(text)
-    val outputfile = File(path + "test.html")
+    val outputfile = File(path + "output/test.html")
     outputfile.writeText(text.toString())
 }
 fun main(args: Array<String>) {
